@@ -54,6 +54,18 @@ section h2 {
     margin-bottom: 25px;
 }
 
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    margin: 0;
+}
+
 
 /* =================================
    4. 入力フォーム
@@ -86,11 +98,11 @@ section h2 {
 .search-area {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
 }
 
 .search-area input {
     flex: 1;
+    min-width: 0;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -118,13 +130,20 @@ button:hover {
 
 
 /* =================================
-   7. フォームのボタン
+   7. リンクボタン
 ================================= */
 
-.button-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 30px;
+.primary-link {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+}
+
+.primary-link:hover {
+    background-color: #555;
 }
 
 .back-button {
@@ -134,6 +153,7 @@ button:hover {
     background-color: #777;
     color: white;
     text-decoration: none;
+    text-align: center;
 }
 
 .back-button:hover {
@@ -142,7 +162,18 @@ button:hover {
 
 
 /* =================================
-   8. 映画一覧
+   8. フォームのボタン
+================================= */
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+
+/* =================================
+   9. 映画一覧
 ================================= */
 
 .movie-item {
@@ -164,9 +195,13 @@ button:hover {
     line-height: 1.8;
 }
 
+.movie-info p {
+    margin: 5px 0;
+}
+
 
 /* =================================
-   9. 映画の編集・削除ボタン
+   10. 映画の編集・削除ボタン
 ================================= */
 
 .movie-actions {
@@ -197,7 +232,7 @@ button:hover {
 
 
 /* =================================
-   10. フッター
+   11. フッター
 ================================= */
 
 footer {
@@ -208,7 +243,7 @@ footer {
 
 
 /* =================================
-   11. スマートフォン対応
+   12. スマートフォン対応
 ================================= */
 
 @media (max-width: 600px) {
@@ -219,6 +254,11 @@ footer {
 
     section {
         padding: 20px;
+    }
+
+    .section-header {
+        align-items: flex-start;
+        flex-direction: column;
     }
 
     .button-group {
