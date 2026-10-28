@@ -1,0 +1,240 @@
+
+/* =================================
+   1. 全体の設定
+================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+
+/* =================================
+   2. ヘッダー
+================================= */
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+
+/* =================================
+   3. メインコンテンツ
+================================= */
+
+main {
+    width: 80%;
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+section {
+    background-color: white;
+    padding: 30px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+}
+
+section h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+
+/* =================================
+   4. 入力フォーム
+================================= */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+
+/* =================================
+   5. 検索エリア
+================================= */
+
+.search-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-area input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+
+/* =================================
+   6. ボタン共通設定
+================================= */
+
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+
+/* =================================
+   7. フォームのボタン
+================================= */
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 4px;
+    background-color: #777;
+    color: white;
+    text-decoration: none;
+}
+
+.back-button:hover {
+    background-color: #555;
+}
+
+
+/* =================================
+   8. 映画一覧
+================================= */
+
+.movie-item {
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.movie-item:last-child {
+    border-bottom: none;
+}
+
+.movie-item h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.movie-info {
+    margin-bottom: 15px;
+    line-height: 1.8;
+}
+
+
+/* =================================
+   9. 映画の編集・削除ボタン
+================================= */
+
+.movie-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.movie-actions a {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+}
+
+.movie-actions a:hover {
+    background-color: #555;
+}
+
+.delete-button {
+    background-color: #b33a3a;
+}
+
+.delete-button:hover {
+    background-color: #8f2929;
+}
+
+
+/* =================================
+   10. フッター
+================================= */
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+}
+
+
+/* =================================
+   11. スマートフォン対応
+================================= */
+
+@media (max-width: 600px) {
+
+    main {
+        width: 90%;
+    }
+
+    section {
+        padding: 20px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .button-group button,
+    .button-group .back-button {
+        text-align: center;
+    }
+
+    .search-area {
+        flex-direction: column;
+    }
+
+    .movie-actions {
+        flex-wrap: wrap;
+    }
+}
