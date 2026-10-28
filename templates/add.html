@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>映画を登録 | 映画管理アプリ</title>
+
+    <style>
+        /* 全体の設定 */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* ヘッダー */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        /* メインコンテンツ */
+        main {
+            width: 80%;
+            max-width: 900px;
+            margin: 30px auto;
+        }
+
+        /* 登録フォーム */
+        .form-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .form-section h2 {
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        /* ボタン */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 4px;
+            background-color: #777;
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #555;
+        }
+
+        /* フッター */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+        /* スマートフォン対応 */
+        @media (max-width: 600px) {
+            main {
+                width: 90%;
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button,
+            .back-button {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <h1>映画管理アプリ</h1>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main>
+
+        <section class="form-section">
+
+            <h2>映画を登録する</h2>
+
+            <form action="#" method="post">
+
+                <!-- 映画タイトル -->
+                <div class="form-group">
+                    <label for="title">映画タイトル</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="映画タイトルを入力してください"
+                        required
+                    >
+                </div>
+
+                <!-- 監督 -->
+                <div class="form-group">
+                    <label for="director">監督</label>
+                    <input
+                        type="text"
+                        id="director"
+                        name="director"
+                        placeholder="監督名を入力してください"
+                        required
+                    >
+                </div>
+
+                <!-- ジャンル -->
+                <div class="form-group">
+                    <label for="genre">ジャンル</label>
+                    <input
+                        type="text"
+                        id="genre"
+                        name="genre"
+                        placeholder="ジャンルを入力してください"
+                        required
+                    >
+                </div>
+
+                <!-- 公開年 -->
+                <div class="form-group">
+                    <label for="year">公開年</label>
+                    <input
+                        type="number"
+                        id="year"
+                        name="year"
+                        placeholder="例：2024"
+                        min="1888"
+                        max="2100"
+                        required
+                    >
+                </div>
+
+                <!-- 評価 -->
+                <div class="form-group">
+                    <label for="rating">評価</label>
+                    <select id="rating" name="rating" required>
+                        <option value="">評価を選択してください</option>
+                        <option value="1">★☆☆☆☆（1）</option>
+                        <option value="2">★★☆☆☆（2）</option>
+                        <option value="3">★★★☆☆（3）</option>
+                        <option value="4">★★★★☆（4）</option>
+                        <option value="5">★★★★★（5）</option>
+                    </select>
+                </div>
+
+                <!-- ボタン -->
+                <div class="button-group">
+                    <button type="submit">登録する</button>
+
+                    <a href="index.html" class="back-button">
+                        戻る
+                    </a>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer>
+        <p>&copy; 2026 映画管理アプリ</p>
+    </footer>
+
+</body>
+</html>
