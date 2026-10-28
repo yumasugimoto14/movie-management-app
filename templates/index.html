@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>映画管理アプリ</title>
+
+    <style>
+        /* ページ全体 */
+        body {
+            font-family: sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* ヘッダー */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* メインコンテンツ */
+        main {
+            width: 80%;
+            max-width: 900px;
+            margin: 30px auto;
+        }
+
+        /* 各セクション */
+        section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+        }
+
+        h2 {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        /* 入力フォーム */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* ボタン */
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        /* 検索フォーム */
+        .search-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-area input {
+            flex: 1;
+        }
+
+        /* 映画一覧 */
+        .movie-item {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+
+        .movie-item:last-child {
+            border-bottom: none;
+        }
+
+        .movie-item h3 {
+            margin-top: 0;
+        }
+
+        .movie-info {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .movie-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .delete-button {
+            background-color: #c0392b;
+        }
+
+        .delete-button:hover {
+            background-color: #e74c3c;
+        }
+
+        /* フッター */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <h1>映画管理アプリ</h1>
+        <p>お気に入りの映画を管理しよう</p>
+    </header>
+
+    <main>
+
+        <!-- 映画登録 -->
+        <section>
+            <h2>映画を登録する</h2>
+
+            <form>
+                <div class="form-group">
+                    <label for="title">映画タイトル</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="映画タイトルを入力してください"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="director">監督</label>
+                    <input
+                        type="text"
+                        id="director"
+                        name="director"
+                        placeholder="監督名を入力してください"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="genre">ジャンル</label>
+                    <input
+                        type="text"
+                        id="genre"
+                        name="genre"
+                        placeholder="ジャンルを入力してください"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="year">公開年</label>
+                    <input
+                        type="number"
+                        id="year"
+                        name="year"
+                        placeholder="公開年を入力してください"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="rating">評価</label>
+                    <select id="rating" name="rating">
+                        <option value="">評価を選択してください</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <button type="submit">映画を登録</button>
+            </form>
+        </section>
+
+        <!-- 映画検索 -->
+        <section>
+            <h2>映画を検索する</h2>
+
+            <div class="search-area">
+                <input
+                    type="text"
+                    id="search"
+                    name="search"
+                    placeholder="映画タイトルを入力してください"
+                >
+
+                <button type="button">検索</button>
+            </div>
+        </section>
+
+        <!-- 映画一覧 -->
+        <section>
+            <h2>登録済みの映画一覧</h2>
+
+            <div class="movie-item">
+                <h3>ショーシャンクの空に</h3>
+
+                <div class="movie-info">
+                    <p>監督：フランク・ダラボン</p>
+                    <p>ジャンル：ドラマ</p>
+                    <p>公開年：1994年</p>
+                    <p>評価：5</p>
+                </div>
+
+                <div class="movie-actions">
+                    <button type="button">編集</button>
+                    <button type="button" class="delete-button">
+                        削除
+                    </button>
+                </div>
+            </div>
+
+            <div class="movie-item">
+                <h3>インターステラー</h3>
+
+                <div class="movie-info">
+                    <p>監督：クリストファー・ノーラン</p>
+                    <p>ジャンル：SF</p>
+                    <p>公開年：2014年</p>
+                    <p>評価：5</p>
+                </div>
+
+                <div class="movie-actions">
+                    <button type="button">編集</button>
+                    <button type="button" class="delete-button">
+                        削除
+                    </button>
+                </div>
+            </div>
+
+            <div class="movie-item">
+                <h3>君の名は。</h3>
+
+                <div class="movie-info">
+                    <p>監督：新海誠</p>
+                    <p>ジャンル：アニメーション</p>
+                    <p>公開年：2016年</p>
+                    <p>評価：4</p>
+                </div>
+
+                <div class="movie-actions">
+                    <button type="button">編集</button>
+                    <button type="button" class="delete-button">
+                        削除
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer>
+        <p>&copy; 2026 映画管理アプリ</p>
+    </footer>
+
+</body>
+</html>
