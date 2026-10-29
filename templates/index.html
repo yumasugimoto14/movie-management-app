@@ -1,123 +1,59 @@
-
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>映画管理アプリ</title>
 
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
 </head>
 
 <body>
 
-    <!-- ヘッダー -->
-    <header>
-        <h1>映画管理アプリ</h1>
-    </header>
+    <h1>映画管理アプリ</h1>
 
-    <!-- メインコンテンツ -->
-    <main>
+    <h2>映画一覧</h2>
 
-        <!-- 映画検索 -->
-        <section>
-            <h2>映画を検索する</h2>
+    {% if movies %}
 
-            <form class="search-area" action="#" method="get">
-                <input
-                    type="text"
-                    name="keyword"
-                    placeholder="映画タイトルや監督名を入力"
-                >
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>タイトル</th>
+                    <th>監督</th>
+                    <th>ジャンル</th>
+                    <th>公開年</th>
+                    <th>評価</th>
+                </tr>
+            </thead>
 
-                <button type="submit">検索</button>
-            </form>
-        </section>
+            <tbody>
 
-        <!-- 映画一覧 -->
-        <section>
-            <div class="section-header">
-                <h2>映画一覧</h2>
+                {% for movie in movies %}
 
-                <a href="add.html" class="primary-link">
-                    映画を登録する
-                </a>
-            </div>
+                    <tr>
+                        <td>{{ movie.id }}</td>
+                        <td>{{ movie.title }}</td>
+                        <td>{{ movie.director }}</td>
+                        <td>{{ movie.genre }}</td>
+                        <td>{{ movie.year }}</td>
+                        <td>{{ movie.rating }}</td>
+                    </tr>
 
-            <!-- 映画1 -->
-            <div class="movie-item">
+                {% endfor %}
 
-                <h3>ショーシャンクの空に</h3>
+            </tbody>
+        </table>
 
-                <div class="movie-info">
-                    <p>監督：フランク・ダラボン</p>
-                    <p>ジャンル：ドラマ</p>
-                    <p>公開年：1994年</p>
-                    <p>評価：★★★★★（5）</p>
-                </div>
+    {% else %}
 
-                <div class="movie-actions">
-                    <a href="edit.html">編集</a>
+        <p>登録されている映画はありません。</p>
 
-                    <button type="button" class="delete-button">
-                        削除
-                    </button>
-                </div>
-
-            </div>
-
-            <!-- 映画2 -->
-            <div class="movie-item">
-
-                <h3>インターステラー</h3>
-
-                <div class="movie-info">
-                    <p>監督：クリストファー・ノーラン</p>
-                    <p>ジャンル：SF</p>
-                    <p>公開年：2014年</p>
-                    <p>評価：★★★★★（5）</p>
-                </div>
-
-                <div class="movie-actions">
-                    <a href="edit.html">編集</a>
-
-                    <button type="button" class="delete-button">
-                        削除
-                    </button>
-                </div>
-
-            </div>
-
-            <!-- 映画3 -->
-            <div class="movie-item">
-
-                <h3>君の名は。</h3>
-
-                <div class="movie-info">
-                    <p>監督：新海誠</p>
-                    <p>ジャンル：アニメーション</p>
-                    <p>公開年：2016年</p>
-                    <p>評価：★★★★☆（4）</p>
-                </div>
-
-                <div class="movie-actions">
-                    <a href="edit.html">編集</a>
-
-                    <button type="button" class="delete-button">
-                        削除
-                    </button>
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-    <!-- フッター -->
-    <footer>
-        <p>&copy; 2026 映画管理アプリ</p>
-    </footer>
+    {% endif %}
 
 </body>
+
 </html>
