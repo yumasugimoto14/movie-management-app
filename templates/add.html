@@ -1,121 +1,86 @@
-
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>映画を登録 | 映画管理アプリ</title>
 
-    <link rel="stylesheet" href="../static/style.css">
+    <title>映画登録</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
 </head>
 
 <body>
 
-    <!-- ヘッダー -->
-    <header>
-        <h1>映画管理アプリ</h1>
-    </header>
+    <h1>映画管理アプリ</h1>
 
-    <!-- メインコンテンツ -->
-    <main>
+    <h2>映画登録</h2>
 
-        <section class="form-section">
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
 
-            <h2>映画を登録する</h2>
+    <form action="/add" method="post">
 
-            <form action="#" method="post">
+        <div>
+            <label for="title">タイトル</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                required
+            >
+        </div>
 
-                <!-- 映画タイトル -->
-                <div class="form-group">
-                    <label for="title">映画タイトル</label>
+        <div>
+            <label for="director">監督</label>
+            <input
+                type="text"
+                id="director"
+                name="director"
+            >
+        </div>
 
-                    <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        placeholder="映画タイトルを入力してください"
-                        required
-                    >
-                </div>
+        <div>
+            <label for="genre">ジャンル</label>
+            <input
+                type="text"
+                id="genre"
+                name="genre"
+            >
+        </div>
 
-                <!-- 監督 -->
-                <div class="form-group">
-                    <label for="director">監督</label>
+        <div>
+            <label for="year">公開年</label>
+            <input
+                type="number"
+                id="year"
+                name="year"
+                min="1"
+                required
+            >
+        </div>
 
-                    <input
-                        type="text"
-                        id="director"
-                        name="director"
-                        placeholder="監督名を入力してください"
-                        required
-                    >
-                </div>
+        <div>
+            <label for="rating">評価（1〜5）</label>
+            <input
+                type="number"
+                id="rating"
+                name="rating"
+                min="1"
+                max="5"
+                required
+            >
+        </div>
 
-                <!-- ジャンル -->
-                <div class="form-group">
-                    <label for="genre">ジャンル</label>
+        <button type="submit">登録</button>
 
-                    <input
-                        type="text"
-                        id="genre"
-                        name="genre"
-                        placeholder="ジャンルを入力してください"
-                        required
-                    >
-                </div>
+    </form>
 
-                <!-- 公開年 -->
-                <div class="form-group">
-                    <label for="year">公開年</label>
-
-                    <input
-                        type="number"
-                        id="year"
-                        name="year"
-                        placeholder="例：2024"
-                        min="1888"
-                        max="2100"
-                        required
-                    >
-                </div>
-
-                <!-- 評価 -->
-                <div class="form-group">
-                    <label for="rating">評価</label>
-
-                    <select id="rating" name="rating" required>
-                        <option value="">評価を選択してください</option>
-                        <option value="1">★☆☆☆☆（1）</option>
-                        <option value="2">★★☆☆☆（2）</option>
-                        <option value="3">★★★☆☆（3）</option>
-                        <option value="4">★★★★☆（4）</option>
-                        <option value="5">★★★★★（5）</option>
-                    </select>
-                </div>
-
-                <!-- ボタン -->
-                <div class="button-group">
-
-                    <button type="submit">
-                        登録する
-                    </button>
-
-                    <a href="index.html" class="back-button">
-                        戻る
-                    </a>
-
-                </div>
-
-            </form>
-
-        </section>
-
-    </main>
-
-    <!-- フッター -->
-    <footer>
-        <p>&copy; 2026 映画管理アプリ</p>
-    </footer>
+    <p>
+        <a href="/">映画一覧に戻る</a>
+    </p>
 
 </body>
+
 </html>

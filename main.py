@@ -45,6 +45,50 @@ def save_movies():
         return False
 
 
+def add_movie_record(title, director, genre, year, rating):
+    #Web画面から受け取った映画情報を登録する
+
+    #タイトルの確認
+    if not isinstance(title, str) or not title.strip():
+        return False
+
+    #公開年の確認
+    if not isinstance(year, int) or year <= 0:
+        return False
+
+    #評価の確認
+    if not isinstance(rating, int) or not 1 <= rating <= 5:
+        return False
+
+    #次のIDを決定する
+    if not movies:
+        movie_id = 1
+    else:
+        movie_id = max(movie["id"] for movie in movies) + 1
+
+    #映画データを作成する
+    movie = {
+        "id": movie_id,
+        "title": title.strip(),
+        "director": director.strip(),
+        "genre": genre.strip(),
+        "year": year,
+        "rating": rating
+    }
+
+    #　映画データを追加する
+    movies.append(movie)
+
+    #　JSONファイルに保存する
+    if save_movies():
+        return True
+
+    #　保存に失敗した場合は追加したデータを取り消す
+    movies.remove(movie)
+
+    return False
+
+
 def get_next_id():
     #次に使用する映画IDを取得する
     if not movies:
