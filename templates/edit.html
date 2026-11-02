@@ -4,117 +4,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>映画を編集 | 映画管理アプリ</title>
+    <title>映画情報の編集</title>
 
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
 
-    <!-- ヘッダー -->
-    <header>
-        <h1>映画管理アプリ</h1>
-    </header>
+    <h1>映画情報の編集</h1>
 
-    <!-- メインコンテンツ -->
-    <main>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
 
-        <section class="form-section">
+    <form action="/edit/{{ movie.id }}" method="post">
 
-            <h2>映画情報を編集する</h2>
+        <div>
+            <label for="title">タイトル</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                value="{{ movie.title }}"
+                required
+            >
+        </div>
 
-            <form action="#" method="post">
+        <div>
+            <label for="director">監督</label>
+            <input
+                type="text"
+                id="director"
+                name="director"
+                value="{{ movie.director }}"
+                required
+            >
+        </div>
 
-                <!-- 映画タイトル -->
-                <div class="form-group">
-                    <label for="title">映画タイトル</label>
+        <div>
+            <label for="genre">ジャンル</label>
+            <input
+                type="text"
+                id="genre"
+                name="genre"
+                value="{{ movie.genre }}"
+                required
+            >
+        </div>
 
-                    <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        value="インセプション"
-                        required
-                    >
-                </div>
+        <div>
+            <label for="year">公開年</label>
+            <input
+                type="number"
+                id="year"
+                name="year"
+                value="{{ movie.year }}"
+                min="1888"
+                max="2100"
+                required
+            >
+        </div>
 
-                <!-- 監督 -->
-                <div class="form-group">
-                    <label for="director">監督</label>
+        <div>
+            <label for="rating">評価（1〜5）</label>
+            <input
+                type="number"
+                id="rating"
+                name="rating"
+                value="{{ movie.rating }}"
+                min="1"
+                max="5"
+                required
+            >
+        </div>
 
-                    <input
-                        type="text"
-                        id="director"
-                        name="director"
-                        value="クリストファー・ノーラン"
-                        required
-                    >
-                </div>
+        <button type="submit">更新する</button>
 
-                <!-- ジャンル -->
-                <div class="form-group">
-                    <label for="genre">ジャンル</label>
+    </form>
 
-                    <input
-                        type="text"
-                        id="genre"
-                        name="genre"
-                        value="SF"
-                        required
-                    >
-                </div>
-
-                <!-- 公開年 -->
-                <div class="form-group">
-                    <label for="year">公開年</label>
-
-                    <input
-                        type="number"
-                        id="year"
-                        name="year"
-                        value="2010"
-                        min="1888"
-                        max="2100"
-                        required
-                    >
-                </div>
-
-                <!-- 評価 -->
-                <div class="form-group">
-                    <label for="rating">評価</label>
-
-                    <select id="rating" name="rating" required>
-                        <option value="1">★☆☆☆☆（1）</option>
-                        <option value="2">★★☆☆☆（2）</option>
-                        <option value="3">★★★☆☆（3）</option>
-                        <option value="4">★★★★☆（4）</option>
-                        <option value="5" selected>★★★★★（5）</option>
-                    </select>
-                </div>
-
-                <!-- ボタン -->
-                <div class="button-group">
-
-                    <button type="submit">
-                        変更を保存する
-                    </button>
-
-                    <a href="index.html" class="back-button">
-                        戻る
-                    </a>
-
-                </div>
-
-            </form>
-
-        </section>
-
-    </main>
-
-    <!-- フッター -->
-    <footer>
-        <p>&copy; 2026 映画管理アプリ</p>
-    </footer>
+    <p>
+        <a href="/">映画一覧に戻る</a>
+    </p>
 
 </body>
 </html>

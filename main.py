@@ -89,6 +89,25 @@ def add_movie_record(title, director, genre, year, rating):
     return False
 
 
+def update_movie_record(movie_id, title, director, genre, year, rating):
+    #映画情報を更新する
+
+    for movie in movies:
+        if movie["id"] == movie_id:
+            movie["title"] = title
+            movie["director"] = director
+            movie["genre"] = genre
+            movie["year"] = year
+            movie["rating"] = rating
+
+            if save_movies():
+                return True
+
+            return False
+        
+    return False
+
+
 def get_next_id():
     #次に使用する映画IDを取得する
     if not movies:

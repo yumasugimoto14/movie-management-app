@@ -1,21 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>映画管理アプリ</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
 
     <h1>映画管理アプリ</h1>
 
+    <p>
+        <a href="/add">映画を登録する</a>
+    </p>
+
     <h2>映画一覧</h2>
-    <a href="/add">映画を登録する</a>
 
     {% if movies %}
 
@@ -28,13 +29,12 @@
                     <th>ジャンル</th>
                     <th>公開年</th>
                     <th>評価</th>
+                    <th>操作</th>
                 </tr>
             </thead>
 
             <tbody>
-
                 {% for movie in movies %}
-
                     <tr>
                         <td>{{ movie.id }}</td>
                         <td>{{ movie.title }}</td>
@@ -42,10 +42,11 @@
                         <td>{{ movie.genre }}</td>
                         <td>{{ movie.year }}</td>
                         <td>{{ movie.rating }}</td>
+                        <td>
+                            <a href="/edit/{{ movie.id }}">編集</a>
+                        </td>
                     </tr>
-
                 {% endfor %}
-
             </tbody>
         </table>
 
@@ -56,5 +57,4 @@
     {% endif %}
 
 </body>
-
 </html>
