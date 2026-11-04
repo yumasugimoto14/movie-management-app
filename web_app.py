@@ -32,9 +32,7 @@ def index(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="index.html",
-        context={
-            "movies": main.movies
-        }
+        context={"movies": main.movies}
     )
 
 
@@ -160,4 +158,19 @@ def update_movie(
     )
 
 
-    
+#　映画削除処理
+@app.post("/delete/{movie_id}")
+def delete_movie(movie_id: int):
+
+    success = main.delete_movie_record(movie_id)
+
+    if success:
+        return RedirectResponse(
+            url="/",
+            status_code=303
+        )
+
+    raise HTTPException(
+        status_code=404,
+        detail="映画の削除に失敗しました。映画が存在しないか、保存に失敗した可能性があります。"
+    )

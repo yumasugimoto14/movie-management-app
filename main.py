@@ -48,23 +48,16 @@ def save_movies():
 def add_movie_record(title, director, genre, year, rating):
     #Web画面から受け取った映画情報を登録する
 
-    #タイトルの確認
-    if not isinstance(title, str) or not title.strip():
+    if not validate_movie_record(
+        title, director, genre, year, rating
+    ):
         return False
-
-    #公開年の確認
-    if not isinstance(year, int) or year <= 0:
-        return False
-
-    #評価の確認
-    if not isinstance(rating, int) or not 1 <= rating <= 5:
-        return False
-
+    
     #次のIDを決定する
-    if not movies:
-        movie_id = 1
-    else:
+    if movies:
         movie_id = max(movie["id"] for movie in movies) + 1
+    else:
+        movie_id = 1
 
     #映画データを作成する
     movie = {
@@ -92,19 +85,79 @@ def add_movie_record(title, director, genre, year, rating):
 def update_movie_record(movie_id, title, director, genre, year, rating):
     #映画情報を更新する
 
+    if not validate_movie_record(
+        title, director, genre, year, rating
+    ):
+        return False
+
+    #　編集対象の映画を探す
     for movie in movies:
         if movie["id"] == movie_id:
-            movie["title"] = title
-            movie["director"] = director
-            movie["genre"] = genre
+
+            #　更新前のデータを保存
+            original_movie = movie.copy()
+
+            #　映画情報を更新
+            movie["title"] = title.strip()
+            movie["director"] = director.strip()
+            movie["genre"] = genre.strip()
             movie["year"] = year
             movie["rating"] = rating
 
             if save_movies():
                 return True
 
+            #　保存に失敗した場合は元の情報に戻す
+            movie.update(original_movie)
+
             return False
-        
+
+    #　該当する映画が見つからなかった場合
+    return False
+
+
+def validate_movie_record(title, director, genre, year, rating):
+    #映画情報が正しい形式か確認する
+
+    if not isinstance(title, str) or not title.strip():
+        return False
+
+    if not isinstance(director, str) or not director.strip():
+        return False
+
+    if not isinstance(genre, str) or not genre.strip():
+        return False
+
+    if not isinstance(year, int) or not 1888 <= year <= 2100:
+        return False
+
+    if not isinstance(rating, int) or not 1 <= rating <= 5:
+        return False
+
+    return True
+
+
+def delete_movie_record(movie_id):
+    #　Web画面から映画を削除する
+
+    #　削除対象の映画を探す
+    for index, movie in enumerate(movies):
+
+        if movie["id"] == movie_id:
+
+            #　映画を一時的に削除
+            deleted_movie = movies.pop(index)
+
+        #　JSONファイルに保存
+        if save_movies():
+            return True
+
+        #　保存に失敗した場合は元に戻す
+        movies.insert(index, deleted_movie)
+
+        return False
+
+    #　該当する映画が見つからなかった場合
     return False
 
 

@@ -44,6 +44,14 @@
                         <td>{{ movie.rating }}</td>
                         <td>
                             <a href="/edit/{{ movie.id }}">編集</a>
+
+                            <form 
+                                action="/delete/{{ movie.id}}" 
+                                method="post"
+                                onsubmit="return confirm('この映画を削除しますか？');"
+                            >
+                                <button type="submit">削除</button>
+                            </form>
                         </td>
                     </tr>
                 {% endfor %}
