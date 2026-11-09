@@ -5,64 +5,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>映画管理アプリ</title>
-
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-    <h1>映画管理アプリ</h1>
+    <div class="container">
+        <h1>映画管理アプリ</h1>
 
-    <p>
-        <a href="/add">映画を登録する</a>
-    </p>
+        <a href="/add" class="button">映画を登録する</a>
 
-    <h2>映画一覧</h2>
+        <h2>映画一覧</h2>
 
-    {% if movies %}
-
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>タイトル</th>
-                    <th>監督</th>
-                    <th>ジャンル</th>
-                    <th>公開年</th>
-                    <th>評価</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for movie in movies %}
+        {% if movies %}
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ movie.id }}</td>
-                        <td>{{ movie.title }}</td>
-                        <td>{{ movie.director }}</td>
-                        <td>{{ movie.genre }}</td>
-                        <td>{{ movie.year }}</td>
-                        <td>{{ movie.rating }}</td>
-                        <td>
-                            <a href="/edit/{{ movie.id }}">編集</a>
+                        <th>ID</th>
+                        <th>タイトル</th>
+                        <th>監督</th>
+                        <th>ジャンル</th>
+                        <th>公開年</th>
+                        <th>評価</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
 
-                            <form 
-                                action="/delete/{{ movie.id}}" 
-                                method="post"
-                                onsubmit="return confirm('この映画を削除しますか？');"
-                            >
-                                <button type="submit">削除</button>
+                <tbody>
+                    {% for movie in movies %}
+                    <tr>
+                        <td>{{ movie["id"] }}</td>
+                        <td>{{ movie["title"] }}</td>
+                        <td>{{ movie["director"] }}</td>
+                        <td>{{ movie["genre"] }}</td>
+                        <td>{{ movie["year"] }}</td>
+                        <td>{{ "★" * movie["rating"] }}{{ "☆" * (5 - movie["rating"]) }}</td>
+                        <td>
+                            <a href="/edit/{{ movie['id'] }}" class="button">編集</a>
+
+                            <form action="/delete/{{ movie['id'] }}"
+                                  method="post"
+                                  class="inline-form"
+                                  onsubmit="return confirm('この映画を削除しますか？');">
+
+                                <button type="submit" class="delete-button">
+                                    削除
+                                </button>
                             </form>
                         </td>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-    {% else %}
+        {% else %}
+            <p>登録されている映画はありません。</p>
+        {% endif %}
 
-        <p>登録されている映画はありません。</p>
-
-    {% endif %}
+    </div>
 
 </body>
 </html>

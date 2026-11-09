@@ -1,42 +1,69 @@
 
 from fastapi import FastAPI, Request, Form, HTTPException
+from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse
 
-import main
+import database
 
 
-#FastAPIのインスタンスの作成
+# FastAPIアプリケーションを作成
 app = FastAPI()
 
-#HTMLテンプレートを読み込むフォルダを指定
+# HTMLテンプレートの保存場所
 templates = Jinja2Templates(directory="templates")
 
-#CSSなどの静的ファイルを読み込む
-app.mount(
-    "/static",
-    StaticFiles(directory="static"),
-    name="static"
-)
+# CSSファイルの保存場所
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-#映画データの読み込み
-main.movies = main.load_movies() or []
+def validate_movie_input(title, director, year, rating):
+    #映画の入力値を検証する
+     
+    if not title.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="映画タイトルを入力してください。"
+        )
+
+    if not director.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="監督名を入力してください。"
+        )
+
+    if not 1888 <= year <= 2100:
+        raise HTTPException(
+            status_code=400,
+            detail="公開年は1888〜2100の範囲で入力してください。"
+        )
+
+    if not 1 <= rating <= 5:
+        raise HTTPException(
+            status_code=400,
+            detail="評価は1〜5の範囲で入力してください。"
+        )
 
 
-#映画一覧画面
+# アプリ起動時にデータベースを初期化
+@app.on_event("startup")
+def startup():
+    database.initialize_database()
+
+
+# 映画一覧画面
 @app.get("/")
 def index(request: Request):
-    # HTMLに映画データを渡す
+    movies = database.get_all_movies()
+
     return templates.TemplateResponse(
         request=request,
         name="index.html",
-        context={"movies": main.movies}
+        context={"movies": movies}
     )
 
 
-#映画登録画面の表示
+# 映画登録画面
 @app.get("/add")
 def add_page(request: Request):
     return templates.TemplateResponse(
@@ -46,69 +73,50 @@ def add_page(request: Request):
     )
 
 
-#映画登録処理
+# 映画登録処理
 @app.post("/add")
 def add_movie(
-    request: Request,
     title: str = Form(...),
     director: str = Form(...),
     genre: str = Form(...),
     year: int = Form(...),
     rating: int = Form(...)
 ):
-    success = main.add_movie_record(
-        title,
-        director,
-        genre,
-        year,
-        rating
-    )
-
-    if success:
-        return RedirectResponse(
-                url="/",
-                status_code=303
-        )
+    validate_movie_input(title, director, year, rating)
     
-    return templates.TemplateResponse(
-        request=request,
-        name="add.html",
-        context={"error": "映画の登録に失敗しました。"},
-        status_code=400
-    )
+    database.add_movie(title, director, genre, year, rating)
+
+    return RedirectResponse(url="/", status_code=303)
 
 
-#映画編集画面の表示
+# 映画編集画面
 @app.get("/edit/{movie_id}")
 def edit_page(request: Request, movie_id: int):
+    movies = database.get_all_movies()
 
-    #編集対象の映画を探す
-    movie = None
+    target_movie = None
 
-    for item in main.movies:
-        if item["id"] == movie_id:
-            movie = item
+    for movie in movies:
+        if movie["id"] == movie_id:
+            target_movie = movie
             break
 
-    #映画が見つからなかった場合
-    if movie is None:
-        raise HTTPException(
-            status_code=404,
-            detail="映画が見つかりません。"
+    if target_movie is None:
+        return RedirectResponse(
+            url="/",
+            status_code=303
         )
 
-    #編集画面を表示
     return templates.TemplateResponse(
         request=request,
         name="edit.html",
-        context={"movie": movie}
+        context={"movie": target_movie}
     )
 
 
-#　映画情報の更新処理
+# 映画編集処理
 @app.post("/edit/{movie_id}")
-def update_movie(
-    request: Request,
+def edit_movie(
     movie_id: int,
     title: str = Form(...),
     director: str = Form(...),
@@ -116,61 +124,26 @@ def update_movie(
     year: int = Form(...),
     rating: int = Form(...)
 ):
-
-    success = main.update_movie_record(
-        movie_id,
-        title,
-        director,
-        genre,
-        year,
+    validate_movie_input(title, director, year, rating)
+    
+    database.update_movie(
+        movie_id, 
+        title, 
+        director, 
+        genre, 
+        year, 
         rating
     )
 
-    #　更新に成功した場合
-    if success:
-        return RedirectResponse(
-            url="/",
-            status_code=303
-        )
-
-    #　更新に失敗した場合
-    movie = None
-
-    for item in main.movies:
-        if item["id"] == movie_id:
-            movie = item
-            break
-
-    if movie is None:
-        raise HTTPException(
-            status_code=404,
-            detail="映画が見つかりません。"
-        )
-
-    return templates.TemplateResponse(
-        request=request,
-        name="edit.html",
-        context={
-            "movie": movie,
-            "error": "映画情報の更新に失敗しました。"
-        },
-        status_code=400
-    )
+    return RedirectResponse(url="/", status_code=303)
 
 
-#　映画削除処理
+# 映画削除処理
 @app.post("/delete/{movie_id}")
 def delete_movie(movie_id: int):
+    database.delete_movie(movie_id)
 
-    success = main.delete_movie_record(movie_id)
-
-    if success:
-        return RedirectResponse(
-            url="/",
-            status_code=303
-        )
-
-    raise HTTPException(
-        status_code=404,
-        detail="映画の削除に失敗しました。映画が存在しないか、保存に失敗した可能性があります。"
+    return RedirectResponse(
+        url="/",
+        status_code=303
     )
