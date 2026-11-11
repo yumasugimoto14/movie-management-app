@@ -53,13 +53,41 @@ def startup():
 
 # 映画一覧画面
 @app.get("/")
-def index(request: Request):
-    movies = database.get_all_movies()
+def index(
+    request: Request, 
+    keyword: str = "", 
+    sort_by:str = "id"
+):
+    # 検索キーワードの前後の空白を削除
+    keyword = keyword.strip()
+
+    # 並び替え条件を取得
+    sort_options = ["id", "year_asc", "year_desc", "rating_desc"]
+
+    if sort_by not in sort_options:
+        sort_by = "id"
+
+    #　キーワードが入力されている場合は検索する
+    if keyword:
+        movies = database.search_movies(keyword)
+    #　キーワードが空の場合は全件取得する
+    else:
+        movies = database.get_all_movies()
+
+    #　並び替えを行う
+    movies = database.sort_movies(movies, sort_by)
+
+    movie_count = len(movies)
 
     return templates.TemplateResponse(
         request=request,
         name="index.html",
-        context={"movies": movies}
+        context={
+            "movies": movies,
+            "keyword": keyword,
+            "sort_by": sort_by,
+            "movie_count": movie_count
+        }
     )
 
 

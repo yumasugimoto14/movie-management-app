@@ -45,6 +45,35 @@ class TestDatabase(unittest.TestCase):
         self.assertEqual(movies[0]["title"], "テスト映画")
         self.assertEqual(movies[0]["rating"], 5)
 
+
+    def create_test_movies(self):
+        #　検索・並び替えのテスト用の映画を登録する
+
+        database.add_movie(
+            "インセプション",
+            "クリストファー・ノーラン",
+            "SF",
+            2010,
+            5
+        )
+
+        database.add_movie(
+            "君の名は。",
+            "新海誠",
+            "アニメ",
+            2016,
+            4
+        )
+
+        database.add_movie(
+            "天気の子",
+            "新海誠",
+            "アニメ",
+            2019,
+            3
+        )
+
+
     def test_update_movie(self):
         """映画を更新できる"""
 
@@ -156,6 +185,126 @@ class TestDatabase(unittest.TestCase):
         self.assertEqual(movies[0]["title"], "既存映画")
         self.assertEqual(movies[0]["rating"], 3)
 
+
+    def test_search_movies_by_title(self):
+        """映画タイトルで検索できる"""
+
+        self.create_test_movies()
+
+        movies = database.search_movies("インセプション")
+
+        self.assertEqual(len(movies), 1)
+        self.assertEqual(movies[0]["title"], "インセプション")
+
+    def test_search_movies_by_director(self):
+        """監督名で検索できる"""
+
+        self.create_test_movies()
+
+        movies = database.search_movies("新海誠")
+
+        self.assertEqual(len(movies), 2)
+
+    def test_search_movies_by_genre(self):
+        """ジャンルで検索できる"""
+
+        self.create_test_movies()
+
+        movies = database.search_movies("アニメ")
+
+        self.assertEqual(len(movies), 2)
+
+    def test_search_movies_no_result(self):
+        """該当する映画がない場合は空リストになる"""
+
+        self.create_test_movies()
+
+        movies = database.search_movies("該当なし")
+
+        self.assertEqual(len(movies), 0)
+
+    def test_search_movies_empty_keyword(self):
+        """空文字で検索すると全件取得できる"""
+
+        self.create_test_movies()
+
+        movies = database.search_movies("")
+
+        self.assertEqual(len(movies), 3)
+
+    def test_search_movies_with_spaces(self):
+        """検索キーワードの前後の空白を除去できる"""
+
+        self.create_test_movies()
+
+        movies = database.search_movies("  インセプション  ")
+
+        self.assertEqual(len(movies), 1)
+        self.assertEqual(movies[0]["title"], "インセプション")
+
+
+    def test_sort_movies_by_year_ascending(self):
+        """公開年の古い順に並び替えられる"""
+
+        self.create_test_movies()
+
+        movies = database.get_all_movies()
+        sorted_movies = database.sort_movies(movies, "year_asc")
+
+        years = [movie["year"] for movie in sorted_movies]
+
+        self.assertEqual(years, [2010, 2016, 2019])
+
+    def test_sort_movies_by_year_descending(self):
+        """公開年の新しい順に並び替えられる"""
+
+        self.create_test_movies()
+
+        movies = database.get_all_movies()
+        sorted_movies = database.sort_movies(movies, "year_desc")
+
+        years = [movie["year"] for movie in sorted_movies]
+
+        self.assertEqual(years, [2019, 2016, 2010])
+
+    def test_sort_movies_by_rating_descending(self):
+        """評価の高い順に並び替えられる"""
+
+        self.create_test_movies()
+
+        movies = database.get_all_movies()
+        sorted_movies = database.sort_movies(movies, "rating_desc")
+
+        ratings = [movie["rating"] for movie in sorted_movies]
+
+        self.assertEqual(ratings, [5, 4, 3])
+
+    def test_sort_movies_by_invalid_condition(self):
+        """不正な並び替え条件の場合は登録順になる"""
+
+        self.create_test_movies()
+
+        movies = database.get_all_movies()
+        sorted_movies = database.sort_movies(movies, "invalid")
+
+        ids = [movie["id"] for movie in sorted_movies]
+
+        self.assertEqual(ids, [1, 2, 3])
+
+
+    def test_search_and_sort_movies(self):
+        """検索結果を公開年の新しい順に並び替えられる"""
+
+        self.create_test_movies()
+
+        movies = database.search_movies("新海誠")
+        sorted_movies = database.sort_movies(movies, "year_desc")
+
+        years = [movie["year"] for movie in sorted_movies]
+
+        self.assertEqual(len(sorted_movies), 2)
+        self.assertEqual(years, [2019, 2016])
+        
 
 if __name__ == "__main__":
     unittest.main()

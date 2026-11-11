@@ -100,6 +100,63 @@ def get_all_movies():
         conn.close()
 
 
+def sort_movies(movies, sort_by):
+    #　並び替え条件を定義する
+    sort_options = {
+        "id": lambda movie: movie["id"],
+        "year_asc": lambda movie: (
+            movie["year"] is None,
+            movie["year"] if movie["year"] is not None else 0,
+            movie["id"]
+        ),
+        "year_desc": lambda movie: (
+            movie["year"] is None,
+            -movie["year"] if movie["year"] is not None else 0,
+            movie["id"]
+        ),
+        "rating_desc": lambda movie: (
+            -movie["rating"],
+            movie["id"]
+        )
+    }
+
+    sort_key = sort_options.get(sort_by, sort_options["id"])
+
+    return sorted(movies, key=sort_key)
+
+
+def search_movies(keyword):
+    #　映画タイトル・監督名・ジャンルから検索する
+    conn = get_connection()
+
+    try:
+        cursor = conn.cursor()
+
+        keyword = keyword.strip()
+        
+        #　検索キーワードを部分一致検索用にする
+        search_keyword = f"%{keyword}%"
+
+        cursor.execute(
+            """
+            SELECT * FROM movies
+            WHERE title LIKE ?
+                OR director LIKE ?
+                OR genre LIKE ?
+            ORDER BY id ASC
+            """,
+            (search_keyword, search_keyword, search_keyword)
+        )
+
+        #　検索結果を取得
+        movies = cursor.fetchall()
+
+        return movies
+    
+    finally:
+        conn.close()
+
+
 def update_movie(movie_id, title, director, genre, year, rating):
     #　映画情報を更新する
     conn = get_connection()

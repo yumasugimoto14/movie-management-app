@@ -14,7 +14,42 @@
 
         <a href="/add" class="button">映画を登録する</a>
 
+        <h2>映画検索・並び替え</h2>
+
+        <form action="/" method="get">
+            <input
+                type="text"
+                name="keyword"
+                placeholder="タイトル・監督・ジャンルで検索"
+                value="{{ keyword }}"
+            >
+
+            <select name="sort_by">
+                <option value="id" {% if sort_by == "id" %}selected{% endif %}>
+                    登録順
+                </option>
+
+                <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>
+                    公開年が古い順
+                </option>
+
+                <option value="year_desc" {% if sort_by == "year_desc" %}selected{% endif %}>
+                    公開年が新しい順
+                </option>
+
+                <option value="rating_desc" {% if sort_by == "rating_desc" %}selected{% endif %}>
+                    評価が高い順
+                </option>       
+            </select>
+
+            <button type="submit">検索・並び替え</button>
+
+            <a href="/" class="button">リセット</a>
+        </form>
+
         <h2>映画一覧</h2>
+
+        <p>検索結果：{{ movie_count }}件</p>
 
         {% if movies %}
             <table>
@@ -58,7 +93,7 @@
             </table>
 
         {% else %}
-            <p>登録されている映画はありません。</p>
+            <p>該当する映画はありません。</p>
         {% endif %}
 
     </div>
