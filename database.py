@@ -100,6 +100,22 @@ def get_all_movies():
         conn.close()
 
 
+def get_movie_by_id(movie_id):
+    #　指定されたIDの映画を取得する
+    conn = get_connection()
+
+    try:
+        movie = conn.execute(
+            "SELECT * FROM movies WHERE id = ?",
+            (movie_id,)
+        ).fetchone()
+
+        return movie
+
+    finally:
+        conn.close()
+
+
 def sort_movies(movies, sort_by):
     #　並び替え条件を定義する
     sort_options = {

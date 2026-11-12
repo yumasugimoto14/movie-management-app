@@ -175,3 +175,26 @@ def delete_movie(movie_id: int):
         url="/",
         status_code=303
     )
+
+
+@app.get("/api/movies")
+def get_movies():
+    #　映画一覧を取得するAPI
+
+    movies = database.get_all_movies()
+
+    return [dict(movie) for movie in movies]
+
+
+#　映画詳細取得API
+@app.get("/api/movies/{movie_id}")
+def get_movie(movie_id: int):
+    movie = database.get_movie_by_id(movie_id)
+
+    if movie is None:
+        raise HTTPException(
+            status_code=404,
+            detail="映画が見つかりません。"
+        )
+
+    return dict(movie)
