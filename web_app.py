@@ -235,7 +235,7 @@ def create_movie(movie: MovieCreate):
     }
 
 
-@app.post("/api/movies/{movie_id}")
+@app.put("/api/movies/{movie_id}")
 def update_movie(movie_id: int, movie: MovieCreate):
     #　映画情報を更新するAPI
 
@@ -258,7 +258,7 @@ def update_movie(movie_id: int, movie: MovieCreate):
 
     return {
         "message": "映画を更新しました。",
-        movie: dict(updated_movie)
+        "movie": dict(updated_movie)
     }
     
 
@@ -266,7 +266,7 @@ def update_movie(movie_id: int, movie: MovieCreate):
     "/api/movies/{movie_id}",
     status_code=204
 )
-def delete_movie(movie_id: int):
+def delete_movie_api(movie_id: int):
     #　映画を削除するAPI
     deleted = database.delete_movie(movie_id)
 
