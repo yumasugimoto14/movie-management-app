@@ -3,6 +3,8 @@ from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, Field
+from fastapi import status
 
 import database
 
@@ -15,6 +17,16 @@ templates = Jinja2Templates(directory="templates")
 
 # CSSファイルの保存場所
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+class MovieCreate(BaseModel):
+    #　映画登録・更新時に受け取るデータ
+
+    title: str = Field(min_length=1)
+    director: str = Field(min_length=1)
+    genre: str
+    year: int = Field(ge=1888, le=2100)
+    rating: int = Field(ge=1, le=5)
 
 
 def validate_movie_input(title, director, year, rating):
@@ -198,3 +210,56 @@ def get_movie(movie_id: int):
         )
 
     return dict(movie)
+
+
+@app.post(
+    "/api/movies",
+    status_code=status.HTTP_201_CREATED
+)
+def create_movie(movie: MovieCreate):
+    #　映画を新規登録するAPI
+
+    movie_id = database.add_movie(
+        movie.title,
+        movie.director,
+        movie.genre,
+        movie.year,
+        movie.rating
+    )
+
+    saved_movie = database.get_movie_by_id(movie_id)
+
+    return {
+        "message": "映画を登録しました。",
+        "movie": dict(saved_movie)
+    }
+
+
+@app.post("/api/movies/{movie_id}")
+def update_movie(movie_id: int, movie: MovieCreate):
+    #　映画情報を更新するAPI
+
+    updated = database.update_movie(
+        movie_id,
+        movie.title,
+        movie.director,
+        movie.genre,
+        movie.year,
+        movie.rating
+    )
+
+    if not updated:
+        raise HTTPException(
+            status_code=404,
+            detail="映画が見つかりません。"
+        )
+
+    updated_movie = database.get_movie_by_id(movie_id)
+
+    return {
+        "message": "映画を更新しました。",
+        movie: dict(updated_movie)
+    }
+    
+
+    
