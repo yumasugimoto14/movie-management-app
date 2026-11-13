@@ -81,3 +81,32 @@ movie-management-app/
 └── static/
     └── style.css
 ```
+
+
+## REST API
+
+FastAPIを使用して、映画情報を操作するREST APIを実装しています。
+
+### API一覧
+
+| メソッド | エンドポイント | 機能 |
+|---|---|---|
+| GET | /api/movies | 映画一覧取得 |
+| GET | /api/movies/{movie_id} | 映画詳細取得 |
+| POST | /api/movies | 映画登録 |
+| PUT | /api/movies/{movie_id} | 映画更新 |
+| DELETE | /api/movies/{movie_id} | 映画削除 |
+
+### APIドキュメント
+
+アプリケーション起動後、以下のURLからSwagger UIを利用できます。
+
+http://127.0.0.1:8000/docs
+
+### APIテスト
+
+以下のコマンドでAPIのテストを実行できます。
+
+```bash
+python -m unittest discover -s tests -v
+```

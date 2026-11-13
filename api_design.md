@@ -3,84 +3,57 @@
 
 ## 1. 概要
 
-映画管理アプリで使用するREST APIの設計書。
-
-FastAPIとSQLiteを使用し、映画情報の取得・登録・更新・削除を行う。
+映画管理アプリで管理している映画情報を、
+外部のプログラムから取得・登録・更新・削除するためのREST API。
 
 ## 2. エンドポイント一覧
 
-| No. | HTTPメソッド | URL | 処理 |
-|---|---|---|---|
-| 1 | GET | /api/movies | 映画一覧取得 |
-| 2 | GET | /api/movies/{movie_id} | 映画詳細取得 |
-| 3 | POST | /api/movies | 映画登録 |
-| 4 | PUT | /api/movies/{movie_id} | 映画更新 |
-| 5 | DELETE | /api/movies/{movie_id} | 映画削除 |
-
-## 3. 映画データの構造
-
-| 項目 | データ型 | 必須 |
+| HTTPメソッド | URL | 内容 |
 |---|---|---|
-| id | integer | No |
-| title | string | Yes |
-| director | string | Yes |
-| genre | string | Yes |
-| year | integer | Yes |
-| rating | integer | Yes |
+| GET | /api/movies | 映画一覧取得 |
+| GET | /api/movies/{movie_id} | 映画詳細取得 |
+| POST | /api/movies | 映画登録 |
+| PUT | /api/movies/{movie_id} | 映画更新 |
+| DELETE | /api/movies/{movie_id} | 映画削除 |
 
-## 4. 各APIの仕様
+## 3. 映画データの項目
 
-### 4-1. 映画一覧取得
+| 項目 | データ型 | 内容 |
+|---|---|---|
+| id | integer | 映画ID |
+| title | string | 映画タイトル |
+| director | string | 監督名 |
+| genre | string | ジャンル |
+| year | integer | 公開年 |
+| rating | integer | 評価（1〜5） |
 
-- メソッド：GET
-- URL：/api/movies
-- 成功時：200 OK
-- 処理：登録されている映画一覧をJSON形式で返す。
+## 4. HTTPステータスコード
 
-### 4-2. 映画詳細取得
-
-- メソッド：GET
-- URL：/api/movies/{movie_id}
-- 成功時：200 OK
-- エラー時：404 Not Found
-- 処理：指定されたIDの映画情報を返す。
-
-### 4-3. 映画登録
-
-- メソッド：POST
-- URL：/api/movies
-- 成功時：201 Created
-- エラー時：422 Unprocessable Entity
-- 処理：受け取った映画情報をデータベースに登録する。
-
-### 4-4. 映画更新
-
-- メソッド：PUT
-- URL：/api/movies/{movie_id}
-- 成功時：200 OK
-- エラー時：404 Not Found、422 Unprocessable Entity
-- 処理：指定されたIDの映画情報を更新する。
-
-### 4-5. 映画削除
-
-- メソッド：DELETE
-- URL：/api/movies/{movie_id}
-- 成功時：204 No Content
-- エラー時：404 Not Found
-- 処理：指定されたIDの映画情報を削除する。
-
-## 5. バリデーション
-
-- titleは空欄にしない。
-- directorは空欄にしない。
-- genreは空欄にしない。
-- yearは整数とする。
-- ratingは1〜5の整数とする。
-
-## 6. エラー処理
-
-| ステータスコード | 内容 |
+| コード | 意味 |
 |---|---|
-| 404 | 指定した映画が存在しない |
-| 422 | 入力データが不正 |
+| 200 | リクエスト成功 |
+| 201 | データ登録成功 |
+| 204 | 削除成功（レスポンス本文なし） |
+| 400 | 入力値エラー |
+| 404 | 対象データが存在しない |
+| 422 | リクエストデータの検証エラー |
 | 500 | サーバー内部エラー |
+
+## 5. POST・PUTのリクエスト例
+
+{
+    "title": "インセプション",
+    "director": "クリストファー・ノーラン",
+    "genre": "SF",
+    "year": 2010,
+    "rating": 5
+}
+
+## 6. 使用技術
+
+- Python
+- FastAPI
+- SQLite
+- Pydantic
+- HTML
+- CSS
