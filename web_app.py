@@ -262,4 +262,17 @@ def update_movie(movie_id: int, movie: MovieCreate):
     }
     
 
+@app.delete(
+    "/api/movies/{movie_id}",
+    status_code=204
+)
+def delete_movie(movie_id: int):
+    #　映画を削除するAPI
+    deleted = database.delete_movie(movie_id)
+
+    if not deleted:
+        raise HTTPException(
+            status_code=404,
+            detail="映画が見つかりません。"
+        )
     
