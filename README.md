@@ -26,6 +26,9 @@ PythonとFastAPIを使用して作成した映画管理アプリです。
 - CSS
 - JSON
 - unittest
+- SQLite
+- JavaScript
+- Fetch API
 
 ## 環境構築
 

@@ -5,98 +5,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>映画管理アプリ</title>
+
+    <!-- CSSの読み込み -->
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
-
-    <div class="container">
+    <header>
         <h1>映画管理アプリ</h1>
+    </header>
 
-        <a href="/add" class="button">映画を登録する</a>
+    <main>
+        <!-- 映画登録フォーム -->
+        <section>
+            <h2>映画を新規登録</h2>
 
-        <h2>映画検索・並び替え</h2>
+            <form id="movie-form">
+                <div>
+                    <label for="title">タイトル</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        required
+                    >
+                </div>
 
-        <form action="/" method="get">
-            <input
-                type="text"
-                name="keyword"
-                placeholder="タイトル・監督・ジャンルで検索"
-                value="{{ keyword }}"
-            >
+                <div>
+                    <label for="director">監督</label>
+                    <input
+                        type="text"
+                        id="director"
+                        name="director"
+                        required
+                    >
+                </div>
 
-            <select name="sort_by">
-                <option value="id" {% if sort_by == "id" %}selected{% endif %}>
-                    登録順
-                </option>
+                <div>
+                    <label for="genre">ジャンル</label>
+                    <input
+                        type="text"
+                        id="genre"
+                        name="genre"
+                        required
+                    >
+                </div>
 
-                <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>
-                    公開年が古い順
-                </option>
+                <div>
+                    <label for="year">公開年</label>
+                    <input
+                        type="number"
+                        id="year"
+                        name="year"
+                        required
+                    >
+                </div>
 
-                <option value="year_desc" {% if sort_by == "year_desc" %}selected{% endif %}>
-                    公開年が新しい順
-                </option>
+                <div>
+                    <label for="rating">評価（1〜5）</label>
+                    <input
+                        type="number"
+                        id="rating"
+                        name="rating"
+                        min="1"
+                        max="5"
+                        required
+                    >
+                </div>
 
-                <option value="rating_desc" {% if sort_by == "rating_desc" %}selected{% endif %}>
-                    評価が高い順
-                </option>       
-            </select>
+                <button type="submit">映画を登録</button>
+            </form>
 
-            <button type="submit">検索・並び替え</button>
+            <!-- 登録結果・エラーメッセージ -->
+            <p id="message"></p>
+        </section>
 
-            <a href="/" class="button">リセット</a>
-        </form>
+        <!-- 映画一覧 -->
+        <section>
+            <h2>登録済みの映画一覧</h2>
 
-        <h2>映画一覧</h2>
+            <div id="movie-list">
+                <!-- JavaScriptで映画情報を表示する -->
+            </div>
+        </section>
+        <!-- 映画編集フォーム -->
+        <section id="edit-section" style="display: none;">
 
-        <p>検索結果：{{ movie_count }}件</p>
+            <h2>映画情報を編集</h2>
 
-        {% if movies %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>タイトル</th>
-                        <th>監督</th>
-                        <th>ジャンル</th>
-                        <th>公開年</th>
-                        <th>評価</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
+            <form id="edit-form">
 
-                <tbody>
-                    {% for movie in movies %}
-                    <tr>
-                        <td>{{ movie["id"] }}</td>
-                        <td>{{ movie["title"] }}</td>
-                        <td>{{ movie["director"] }}</td>
-                        <td>{{ movie["genre"] }}</td>
-                        <td>{{ movie["year"] }}</td>
-                        <td>{{ "★" * movie["rating"] }}{{ "☆" * (5 - movie["rating"]) }}</td>
-                        <td>
-                            <a href="/edit/{{ movie['id'] }}" class="button">編集</a>
+                <input type="hidden" id="edit-id">
 
-                            <form action="/delete/{{ movie['id'] }}"
-                                  method="post"
-                                  class="inline-form"
-                                  onsubmit="return confirm('この映画を削除しますか？');">
+                <div>
+                    <label for="edit-title">タイトル</label>
+                    <input type="text" id="edit-title" required>
+                </div>
 
-                                <button type="submit" class="delete-button">
-                                    削除
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <div>
+                    <label for="edit-director">監督</label>
+                    <input type="text" id="edit-director" required>
+                </div>
 
-        {% else %}
-            <p>該当する映画はありません。</p>
-        {% endif %}
+                <div>
+                    <label for="edit-genre">ジャンル</label>
+                    <input type="text" id="edit-genre" required>
+                </div>
 
-    </div>
+                <div>
+                    <label for="edit-year">公開年</label>
+                    <input type="number" id="edit-year" required>
+                </div>
 
+                <div>
+                    <label for="edit-rating">評価</label>
+                    <input
+                        type="number"
+                        id="edit-rating"
+                        min="1"
+                        max="5"
+                        required
+                    >
+                </div>
+
+                <button type="submit">更新する</button>
+                <button type="button" id="cancel-edit">キャンセル</button>
+
+            </form>
+
+        </section>
+    </main>
+
+    <!-- JavaScriptの読み込み -->
+    <script src="/static/script.js"></script>
 </body>
 </html>
